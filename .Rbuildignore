@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^development$
+^private$
+^\.travis\.yml$
+^codecov\.yml$
