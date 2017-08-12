@@ -1,0 +1,13 @@
+Package: ralgotools
+Title: [DOCUMENTATION NEEDED] TITLE
+Version: 0.0.0.9000
+Authors@R: person(email = "bfatemi07@gmail.com", role = c("aut", "cre"), given = "Bobby", family = "Fatemi")
+Description: [DOCUMENTATION NEEDED] DESCRIPTION.
+Depends: R (>= 3.3.3)
+License: file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Suggests: testthat
+URL: https://github.com/bfatemi/ralgotools
+BugReports: https://github.com/bfatemi/ralgotools/issues
