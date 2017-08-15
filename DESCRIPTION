@@ -12,3 +12,13 @@ Suggests: testthat,
     covr
 URL: https://github.com/bfatemi/ralgotools
 BugReports: https://github.com/bfatemi/ralgotools/issues
+Imports: data.table,
+    httr,
+    secret,
+    stringr,
+    openssl,
+    jsonlite,
+    rlang,
+    lubridate,
+    pryr,
+    R6
