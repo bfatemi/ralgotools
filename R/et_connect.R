@@ -2,8 +2,6 @@
 #'
 #' Internally used to facilitate back-end connection to Etrade
 #'
-#' @import rstudioapi sodium
-#'
 #' @name et_connect
 NULL
 
