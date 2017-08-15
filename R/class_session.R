@@ -144,8 +144,6 @@ ETRADE <- R6::R6Class(
       setApp = function(appname = NULL, key = NULL, secret = NULL){
 
          if(is.null(appname) | is.null(appname) | is.null(appname)){
-            message("Parameters to setApp not provided. Setting default.")
-
             ###
             ###
             ###
