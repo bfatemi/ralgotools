@@ -169,8 +169,8 @@ ETRADE <- R6::R6Class(
       setRequestSign = function(){
          private$sign_req <- httr::oauth_signature(
             url          = private$url_request,
-            app          = private$app,
-            other_params = c(oauth_callback="oob")
+            app          = private$app
+            # other_params = c(oauth_callback="oob")
          )
          return(TRUE)
       },

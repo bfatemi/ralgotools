@@ -1,7 +1,7 @@
 .onLoad <- function(libname, pkgname){
-   Sys.setenv("HTTR_PORT" = 7166)
+   Sys.setenv("HTTR_SERVER" = "localhost")
    Sys.setenv("HTTR_SERVER_PORT" = 7166)
-
+   options(httr_oob_default=TRUE)
    invisible(TRUE)
 }
 
