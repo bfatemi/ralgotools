@@ -23,7 +23,7 @@
    packageStartupMessage("\nAccess Key Identified\nSetting session environment variables...\n")
 
    Sys.setenv("RALGO_KEY_PATH" = ralgo_key_path)
-   Sys.setenv("ETRADE_PATH" = normalizePath(paste0(Sys.getenv("RALGO_DIR"), "/.etrade")))
+   Sys.setenv("ETRADE_PATH" = normalizePath(paste0(Sys.getenv("RALGO_DIR"), "/.etrade"), mustWork = FALSE))
 
    # Check access
    tryCatch({
