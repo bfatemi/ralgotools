@@ -38,8 +38,14 @@ ETRADE <- R6::R6Class(
       ## INITIALIZE SESSION
       ##  - Set environmental variables/creating dir if does not exist
       initialize = function(){
+         if(Sys.getenv("RALGO_DIR") == "")
+            Sys.setenv(RALGO_DIR = paste0(Sys.getenv("R_LIBS_USER"), "/ralgo_data"))
+
          if(Sys.getenv("ETRADE_PATH") == "")
             Sys.setenv(ETRADE_PATH = paste0(Sys.getenv("RALGO_DIR"), "/.etrade"))
+
+         if(!dir.exists(Sys.getenv("RALGO_DIR")))
+            dir.create(Sys.getenv("RALGO_DIR"))
       },
 
       ## API CALL ARGS - required by etrade_api
@@ -144,6 +150,8 @@ ETRADE <- R6::R6Class(
       setApp = function(appname = NULL, key = NULL, secret = NULL){
 
          if(is.null(appname) | is.null(appname) | is.null(appname)){
+            message("Parameters to setApp not provided. Setting default.")
+
             ###
             ###
             ###
@@ -169,8 +177,8 @@ ETRADE <- R6::R6Class(
       setRequestSign = function(){
          private$sign_req <- httr::oauth_signature(
             url          = private$url_request,
-            app          = private$app
-            # other_params = c(oauth_callback="oob")
+            app          = private$app,
+            other_params = c(oauth_callback="oob")
          )
          return(TRUE)
       },
@@ -231,11 +239,4 @@ ETRADE <- R6::R6Class(
    )
 
 )
-
-
-
-
-
-
-
 

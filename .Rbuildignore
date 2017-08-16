@@ -4,3 +4,4 @@
 ^private$
 ^\.travis\.yml$
 ^codecov\.yml$
+^\.httr-oauth$

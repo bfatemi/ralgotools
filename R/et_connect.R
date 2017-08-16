@@ -42,7 +42,9 @@ et_connect <- function(){
     tryCatch({
       etconn$renew_access()
     }, error = function(c){
-      stop("Access expired and could not run renew_access(). Attempting to reset...")
+      message("Access expired and could not run renew_access(). Deleting old connection...")
+       file.remove(Sys.getenv("ETRADE_PATH"))
+       stop("Connection deleted. Try re-running function", call. = FALSE)
     })
   }
   return(etconn)

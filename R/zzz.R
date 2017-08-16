@@ -1,11 +1,12 @@
 .onLoad <- function(libname, pkgname){
-   Sys.setenv("HTTR_SERVER" = "localhost")
-   Sys.setenv("HTTR_SERVER_PORT" = 7166)
-   options(httr_oob_default=TRUE)
+   Sys.setenv("HTTR_PORT" = "localhost")
+   Sys.setenv("HTTR_SERVER_PORT" = 1410)
    invisible(TRUE)
 }
 
 .onAttach <- function(libname, pkgname){
+   Sys.setenv("HTTR_PORT" = "localhost")
+   Sys.setenv("HTTR_SERVER_PORT" = 1410)
 
    path <- normalizePath(paste0(.libPaths()[1], "/ralgo_data"), mustWork = FALSE)
    Sys.setenv("RALGO_DIR" = path)
