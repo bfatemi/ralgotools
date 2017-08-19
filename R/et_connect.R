@@ -26,64 +26,32 @@ et_default_app <- function(){
 #    return(rtoken)
 # }
 #
-# app <- et_default_app()
-# req_token <- et_request_token(app)
+# et_auth_access <- function(app, req_token){
 #
+#    url_access <- "https://etws.etrade.com/oauth/access_token"
 #
-#
-# lurl             <- httr::parse_url("https://us.etrade.com/e/t/etws/authorize?key={key}&token={token}")
-# lurl$query$key   <- app$key
-# lurl$query$token <- req_token$oauth_token
-#
-# url <- httr::build_url(lurl)
-#
-# listen <- function(env) env$QUERY_STRING
-# server <- httpuv::startServer("0.0.0.0", 7166, list(call = listen))
-#
-# httr::BROWSE(request_url)
-# httpuv::stopServer(server)
-
-# set_callback("request", old_req)
-
-# r <- GET(url)
-
-# rawToChar(r$content)
-# httr::oauth_exchanger(url)
-# oauth <- httr::oauth_listener(url)
-
-
-# et_authorize_app <- function(app, req_token){
-#    url <- "https://us.etrade.com/e/t/etws/authorize"
-#
-#
+#    lurl             <- httr::parse_url("https://us.etrade.com/e/t/etws/authorize?key={key}&token={token}")
+#    lurl$query$key   <- app$key
+#    lurl$query$token <- req_token$oauth_token
+#    verifier <- httr::oauth_exchanger(httr::build_url(lurl))$code
 #
 #    sign <- httr::oauth_signature(
-#       url = url,
-#       app = app,
-#       token = req_token$oauth_token,
-#       token_secret = req_token$oauth_token_secret,
-#       other_params = c(oauth_callback="oob")
+#       url          = url_access,
+#       app          = app,
+#       token        = req_token$oauth_token,
+#       token_secret = req_token$oauth_secret,
+#       other_params = c(oauth_verifier = verifier)
 #    )
 #
-#    httr::oauth_exchanger()
 #
-#
-#    # head <- httr::add_headers(.headers = list(key = app$key, token = req_token$oauth_token))
-#    httr::content(httr::GET(url, query = list(key = app$key, token = req_token$oauth_token)))
-#
-#
-#    lurl             <- httr::parse_url(private$url_auth)
-#    lurl$query$key   <- private$app$key
-#    lurl$query$token <- private$oauth_token
-#
-#    url   <- httr::build_url(lurl)
-#    oauth <- httr::oauth_listener(url)
-#    private$setAccessSign(oauth$oauth_verifier)
-#
-#    private$token  <- httr::content(
-#       httr::GET(private$url_access, httr::oauth_header(private$sign_acc))
-#    )
+#    httr::content(httr::GET(url_access, httr::oauth_header(sign)))
 # }
+#
+#
+#
+# app <- et_default_app()
+# req_token <- et_request_token(app)
+# access_token <- et_auth_access(app, req_token)
 
 
 #' @describeIn et_connect retrieves or initializes authentication to Etrade
