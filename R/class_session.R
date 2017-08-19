@@ -150,15 +150,6 @@ ETRADE <- R6::R6Class(
       setApp = function(appname = NULL, key = NULL, secret = NULL){
 
          if(is.null(appname) | is.null(appname) | is.null(appname)){
-            message("Parameters to setApp not provided. Setting default.")
-
-            ###
-            ###
-            ###
-            ### IMPLEMENTING A TRY CATCH AND RESUMING WORK HERE ###
-            ###  - wrap in try catch in case et_default_app fails
-            ###
-            ###
             private$app <- do.call(httr::oauth_app, et_default_app())
             return(TRUE)
          }else{
