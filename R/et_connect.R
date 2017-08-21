@@ -8,7 +8,13 @@ NULL
 #' @describeIn et_connect sets system variables in order to use default app of this package
 #' @export
 et_default_app <- function(){
-   secret::get_secret("etrade_app", key = openssl::read_key(Sys.getenv("RALGO_KEY_PATH")))
+   op <- getOption("secret.vault")
+   vpath <- system.file("vault", package = "ralgotools")
+   on.exit(options(secret.vault = op))
+
+   key <- openssl::read_key(Sys.getenv("RALGO_KEY_PATH"))
+   app <- secret::get_secret(name = "etrade_app", key = key)
+   return(app)
 }
 
 
