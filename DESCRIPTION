@@ -23,4 +23,5 @@ Imports: data.table,
     pryr,
     R6,
     XML,
+    magrittr,
     devtools
