@@ -13,7 +13,7 @@ et_default_app <- function(){
    on.exit(options(secret.vault = op))
 
    key <- openssl::read_key(Sys.getenv("RALGO_KEY_PATH"))
-   app <- secret::get_secret(name = "etrade_app", key = key)
+   app <- secret::get_secret(name = "etrade_app", vault = vpath, key = key)
    return(app)
 }
 
