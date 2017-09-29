@@ -2,30 +2,36 @@
 % Please edit documentation in R/et_connect.R
 \name{et_connect}
 \alias{et_connect}
-\alias{et_default_app}
+\alias{et_app}
+\alias{et_request_token}
+\alias{et_auth_url}
 \alias{et_connect}
-\alias{stop_for_access}
+\alias{EtradeConnect}
 \title{Internal Connection Functions}
 \usage{
-et_default_app()
+et_app()
+
+et_request_token(app)
+
+et_auth_url(app, rtoken)
 
 et_connect()
 
-stop_for_access()
+EtradeConnect()
 }
 \description{
 Internally used to facilitate back-end connection to Etrade
-
-#' @describeIn et_connect retrieves or initializes authentication to Etrade
-#' @export
-et_connect <- rg_connect
 }
 \section{Functions}{
 \itemize{
-\item \code{et_default_app}: sets system variables in order to use default app of this package
+\item \code{et_app}: returns etrade application saved in this package
 
-\item \code{et_connect}: retrieves or initializes authentication to Etrade
+\item \code{et_request_token}: function to ask for and retrieve request token from etrade
 
-\item \code{stop_for_access}: returns ERROR if no access is found
+\item \code{et_auth_url}: Construct url for authorization call to Etrade
+
+\item \code{et_connect}: Internal Streamlined Connection Without Shiny Application for Testing Purposes
+
+\item \code{EtradeConnect}: Launches application to faciliate 2-factor authentication
 }}
 

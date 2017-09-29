@@ -38,14 +38,15 @@ ETRADE <- R6::R6Class(
       ## INITIALIZE SESSION
       ##  - Set environmental variables/creating dir if does not exist
       initialize = function(){
-         if(Sys.getenv("RALGO_DIR") == "")
-            Sys.setenv(RALGO_DIR = paste0(Sys.getenv("R_LIBS_USER"), "/ralgo_data"))
-
-         if(Sys.getenv("ETRADE_PATH") == "")
-            Sys.setenv(ETRADE_PATH = paste0(Sys.getenv("RALGO_DIR"), "/.etrade"))
-
-         if(!dir.exists(Sys.getenv("RALGO_DIR")))
-            dir.create(Sys.getenv("RALGO_DIR"))
+         invisible(TRUE)
+         # if(Sys.getenv("RALGO_DIR") == "")
+         #    Sys.setenv(RALGO_DIR = paste0(Sys.getenv("R_LIBS_USER"), "/ralgo_data"))
+         #
+         # if(Sys.getenv("ETRADE_PATH") == "")
+         #    Sys.setenv(ETRADE_PATH = paste0(Sys.getenv("RALGO_DIR"), "/.etrade"))
+         #
+         # if(!dir.exists(Sys.getenv("RALGO_DIR")))
+         #    dir.create(Sys.getenv("RALGO_DIR"))
       },
 
       ## API CALL ARGS - required by etrade_api
@@ -81,7 +82,17 @@ ETRADE <- R6::R6Class(
             token_secret = private$token$oauth_token_secret
          )
          resp <- httr::GET(private$url_renew, httr::oauth_header(sign))
-         httr::stop_for_status(resp)
+         tryCatch(httr::stop_for_status(resp),
+                  error = function(c){
+                     session_path <- Sys.getenv("ETRADE_PATH")
+
+                     if(file.exists(session_path)){
+                        file.remove(session_path)
+                        stop("Error with previous access. Access file removed. Run function again.", call. = FALSE)
+                     }else{
+                        stop("Unkown access renew error. Access file does not exist, but renew was attempted")
+                     }
+                  })
 
          self$last_accessed <- Sys.time()
          return(TRUE)

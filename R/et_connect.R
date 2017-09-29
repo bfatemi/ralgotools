@@ -1,114 +1,71 @@
-#' Internal Connection Functions
+#' Connect to Etrade
 #'
-#' Internally used to facilitate back-end connection to Etrade
+#' Function to Launch the Authorization process to connect to etrade and grant
+#' access to trading with ralgotools.
+#'
+#' @import httr
+#' @import shiny
 #'
 #' @name et_connect
 NULL
 
-#' @describeIn et_connect sets system variables in order to use default app of this package
+#' @describeIn et_connect Launches application to faciliate 2-factor authentication
 #' @export
-et_default_app <- function(){
-   op <- getOption("secret.vault")
-   vpath <- system.file("vault", package = "ralgotools")
-   on.exit(options(secret.vault = op))
+EtradeConnect <- function(){
+   appDir <- system.file("shiny-connect", "AppConnect", package = "ralgotools")
+   if(appDir=="")
+      stop("Count not find application to launch. Try Reinstalling 'ralgotools'", call. = FALSE)
+   shiny::runApp(appDir)
+}
 
-   key <- openssl::read_key(Sys.getenv("RALGO_KEY_PATH"))
-   app <- secret::get_secret(name = "etrade_app", vault = vpath, key = key)
-   return(app)
+#' @describeIn et_connect returns etrade application saved in this package
+et_app <- function(){
+   httr::oauth_app(appname = "ralgo",
+             key = "8b8aeb67a64e91979d11247855d1d9b0",
+             secret = "69d25b800ca84a90be4347469f9aff66",
+             redirect_uri = "http://localhost:1410")
 }
 
 
-# et_request_token <- function(app){
-#    url <- "https://etws.etrade.com/oauth/request_token"
-#
-#    sign <- httr::oauth_signature(
-#       url = url,
-#       app = app,
-#       other_params = c(oauth_callback="oob")
-#    )
-#
-#    oahead <- httr::oauth_header(sign)
-#    rtoken <- httr::content(httr::GET(url, oahead))
-#    return(rtoken)
-# }
-#
-# et_auth_access <- function(app, req_token){
-#
-#    url_access <- "https://etws.etrade.com/oauth/access_token"
-#
-#    lurl             <- httr::parse_url("https://us.etrade.com/e/t/etws/authorize?key={key}&token={token}")
-#    lurl$query$key   <- app$key
-#    lurl$query$token <- req_token$oauth_token
-#    verifier <- httr::oauth_exchanger(httr::build_url(lurl))$code
-#
-#    sign <- httr::oauth_signature(
-#       url          = url_access,
-#       app          = app,
-#       token        = req_token$oauth_token,
-#       token_secret = req_token$oauth_secret,
-#       other_params = c(oauth_verifier = verifier)
-#    )
-#
-#
-#    httr::content(httr::GET(url_access, httr::oauth_header(sign)))
-# }
-#
-#
-#
-# app <- et_default_app()
-# req_token <- et_request_token(app)
-# access_token <- et_auth_access(app, req_token)
+#' @describeIn et_connect function to ask for and retrieve request token from etrade
+et_request_token <- function(app){
+   url  <- "https://etws.etrade.com/oauth/request_token"
+   sign <- httr::oauth_signature(url, app = app, other_params = c(oauth_callback="oob"))
+   resp <- httr::GET(url, httr::oauth_header(sign))
+   return(httr::content(resp))
+}
 
 
-#' @describeIn et_connect retrieves or initializes authentication to Etrade
+#' @describeIn et_connect Construct url for authorization call to Etrade
+et_auth_url <- function(app, rtoken){
+   url <- "https://us.etrade.com/e/t/etws/authorize"
+   httr::modify_url(url = url, query = list(key = app$key, token = rtoken$oauth_token))
+}
+
+
+#' @describeIn et_connect Internal Streamlined Connection Without Shiny Application for Testing Purposes
 et_connect <- function(){
-   path <- Sys.getenv("ETRADE_PATH")
+   app    <- et_app()
+   rtoken <- et_request_token(app)
 
-   ## note that initializing a session object will store it
-   if(is.null(path) | path == "" | !file.exists(path)){
-      etconn <- ETRADE$new()$start()
+   url_acc <- "https://etws.etrade.com/oauth/access_token"
+   authUrl <- et_auth_url(app, rtoken)
 
-      tryCatch({
-         saveRDS(etconn, Sys.getenv("ETRADE_PATH"))
-      }, error = function(c){
-         stop("Could not save etconn after successful renew.
-              \nSave path should have been saved on start up...
-              Check valid path with: Sys.getenv('ETRADE_PATH')")
-    })
+   BROWSE(authUrl)
 
-  }else{
-    ## read in saved session object
-    tryCatch({
-      etconn <- readRDS(path)
-    }, error = function(c){
-      stop("Cannot read previously stored connection from :\n\n", path)
-    })
-  }
+   verifier <- readline(prompt = "Enter Access Code Sent as a Text Message: ")
 
-  ## renew access if expired
-  if(!etconn$remaining_dur > 0){
-    tryCatch({
-      etconn$renew_access()
-    }, error = function(c){
-      message("Access expired and could not run renew_access(). Deleting old connection...")
-       file.remove(Sys.getenv("ETRADE_PATH"))
-       stop("Connection deleted. Try re-running function", call. = FALSE)
-    })
-  }
-  return(etconn)
+   sign <-httr::oauth_signature(
+      url          = url_acc,
+      app          = app,
+      token        = rtoken$oauth_token,
+      token_secret = rtoken$oauth_token_secret,
+      other_params = c(oauth_verifier = verifier)
+   )
+   resp <- httr::GET(url_acc, httr::oauth_header(sign))
+   content(resp)
 }
 
-#' #' @describeIn et_connect retrieves or initializes authentication to Etrade
-#' #' @export
-#' et_connect <- rg_connect
 
-#' @describeIn et_connect returns ERROR if no access is found
-stop_for_access <- function(){
-  session <- et_connect()
 
-  if(session$check_access() == "INACTIVE"){
-    print_stamp("SESSION EXPIRED", "*")
-    stop("Session expires at midnight OR after 2 hours of inactivity\n\nAuthenticate with etrade_connect()", call. = FALSE)
-  }
-  invisible(TRUE)
-}
+

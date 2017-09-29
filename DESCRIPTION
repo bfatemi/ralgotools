@@ -24,4 +24,5 @@ Imports: data.table,
     R6,
     XML,
     magrittr,
-    devtools
+    devtools,
+    shiny
