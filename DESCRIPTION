@@ -25,4 +25,5 @@ Imports: data.table,
     XML,
     magrittr,
     devtools,
-    shiny
+    shiny,
+    shinythemes

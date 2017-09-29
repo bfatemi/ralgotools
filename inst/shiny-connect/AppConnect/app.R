@@ -1,6 +1,6 @@
 
 ui <- fluidPage(
-   theme = shinytheme("superhero"),
+   theme = shinythemes::shinytheme("superhero"),
    tags$head(
       tags$style(HTML("p {
                       display: block;
@@ -41,7 +41,7 @@ server <- function(input, output, session) {
 
 
 
-   app <- et_app()
+   app <- ralgotools::et_app()
 
    show_app_info <- function(){
       tmp.html <- "<br/><div style = 'background-color: #29343f; border-radius: 10px; width: 70%'>"
@@ -87,13 +87,13 @@ server <- function(input, output, session) {
 
 
 
-   app     <- et_app()
-   rtoken  <- et_request_token(app)
+   app     <- ralgotools::et_app()
+   rtoken  <- ralgotools::et_request_token(app)
    url_acc <- "https://etws.etrade.com/oauth/access_token"
-   authUrl <- et_auth_url(app, rtoken)
+   authUrl <- ralgotools::et_auth_url(app, rtoken)
 
    observeEvent(input$submitrequest, {
-      BROWSE(authUrl)
+      httr::BROWSE(authUrl)
       showModal(CodeModal())
    })
 
@@ -117,7 +117,7 @@ server <- function(input, output, session) {
 
          confirm_modal("Access Granted")
 
-         stopApp(content(resp))
+         stopApp(httr::content(resp))
 
       }else{
          showModal(CodeModal(blankcode = TRUE))

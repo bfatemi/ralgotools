@@ -108,5 +108,5 @@ et_quote_all <- function(){
                  "annualDividend", "dividend", "eps", "estEarnings", "exDivDate",
                  "prevDayVolume", "prevClose",
                  "open", "numTrades", "todayClose", "totalVolume")
-   et_quote(lu_all_tickers())[, keepCols, with=FALSE]
+   et_quote(lu_my_tickers())[, keepCols, with=FALSE]
 }

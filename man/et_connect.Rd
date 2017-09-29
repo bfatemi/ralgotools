@@ -2,13 +2,15 @@
 % Please edit documentation in R/et_connect.R
 \name{et_connect}
 \alias{et_connect}
+\alias{EtradeConnect}
 \alias{et_app}
 \alias{et_request_token}
 \alias{et_auth_url}
 \alias{et_connect}
-\alias{EtradeConnect}
-\title{Internal Connection Functions}
+\title{Connect to Etrade}
 \usage{
+EtradeConnect()
+
 et_app()
 
 et_request_token(app)
@@ -16,14 +18,20 @@ et_request_token(app)
 et_auth_url(app, rtoken)
 
 et_connect()
+}
+\arguments{
+\item{app}{INTERNAL Argument for making authorization requests on behalf of user}
 
-EtradeConnect()
+\item{rtoken}{INTERNAL Request token provided to authorization function that finishes the oauth dance}
 }
 \description{
-Internally used to facilitate back-end connection to Etrade
+Function to Launch the Authorization process to connect to etrade and grant
+access to trading with ralgotools.
 }
 \section{Functions}{
 \itemize{
+\item \code{EtradeConnect}: Launches application to faciliate 2-factor authentication
+
 \item \code{et_app}: returns etrade application saved in this package
 
 \item \code{et_request_token}: function to ask for and retrieve request token from etrade
@@ -31,7 +39,5 @@ Internally used to facilitate back-end connection to Etrade
 \item \code{et_auth_url}: Construct url for authorization call to Etrade
 
 \item \code{et_connect}: Internal Streamlined Connection Without Shiny Application for Testing Purposes
-
-\item \code{EtradeConnect}: Launches application to faciliate 2-factor authentication
 }}
 

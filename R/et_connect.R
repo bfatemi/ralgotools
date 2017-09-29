@@ -3,6 +3,9 @@
 #' Function to Launch the Authorization process to connect to etrade and grant
 #' access to trading with ralgotools.
 #'
+#' @param app INTERNAL Argument for making authorization requests on behalf of user
+#' @param rtoken INTERNAL Request token provided to authorization function that finishes the oauth dance
+#'
 #' @import httr
 #' @import shiny
 #'
@@ -19,6 +22,7 @@ EtradeConnect <- function(){
 }
 
 #' @describeIn et_connect returns etrade application saved in this package
+#' @export
 et_app <- function(){
    httr::oauth_app(appname = "ralgo",
              key = "8b8aeb67a64e91979d11247855d1d9b0",
@@ -28,6 +32,7 @@ et_app <- function(){
 
 
 #' @describeIn et_connect function to ask for and retrieve request token from etrade
+#' @export
 et_request_token <- function(app){
    url  <- "https://etws.etrade.com/oauth/request_token"
    sign <- httr::oauth_signature(url, app = app, other_params = c(oauth_callback="oob"))
@@ -37,6 +42,7 @@ et_request_token <- function(app){
 
 
 #' @describeIn et_connect Construct url for authorization call to Etrade
+#' @export
 et_auth_url <- function(app, rtoken){
    url <- "https://us.etrade.com/e/t/etws/authorize"
    httr::modify_url(url = url, query = list(key = app$key, token = rtoken$oauth_token))
@@ -44,6 +50,7 @@ et_auth_url <- function(app, rtoken){
 
 
 #' @describeIn et_connect Internal Streamlined Connection Without Shiny Application for Testing Purposes
+#' @export
 et_connect <- function(){
    app    <- et_app()
    rtoken <- et_request_token(app)
@@ -51,7 +58,7 @@ et_connect <- function(){
    url_acc <- "https://etws.etrade.com/oauth/access_token"
    authUrl <- et_auth_url(app, rtoken)
 
-   BROWSE(authUrl)
+   httr::BROWSE(authUrl)
 
    verifier <- readline(prompt = "Enter Access Code Sent as a Text Message: ")
 
