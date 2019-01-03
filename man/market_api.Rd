@@ -7,8 +7,8 @@
 \alias{et_quote_all}
 \title{Get Up-to-Date Quote Information}
 \usage{
-et_quote(tickers = NULL, detailFlag = c("ALL", "FUNDAMENTAL", "INTRADAY",
-  "WEEK_52"))
+et_quote(tickers = NULL, detailFlag = c("ALL", "FUNDAMENTAL",
+  "INTRADAY", "WEEK_52"))
 
 et_find_ticker(companyname = NULL, type = c("EQ", "MF"))
 

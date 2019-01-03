@@ -11,8 +11,8 @@ list_accounts()
 
 list_balances(aid = NULL, asDT = FALSE)
 
-list_positions(aid = NULL, postype = c("EQ", "ALL", "OPTN", "INDX", "MF",
-  "FI"), asDT = FALSE)
+list_positions(aid = NULL, postype = c("EQ", "ALL", "OPTN", "INDX",
+  "MF", "FI"), asDT = FALSE)
 }
 \arguments{
 \item{aid}{An accountId required to look up information specific to one or more accounts.}

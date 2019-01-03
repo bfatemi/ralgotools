@@ -16,9 +16,11 @@ NULL
 #' @export
 list_accounts <- function(){
    session <- et_connect()
-   rawData <- etrade_api(module = "accounts", api = "accountlist", session = session)
+   rawData <- etrade_api(module = "accounts",
+                         api = "accountlist",
+                         session = session)
    resll   <- lapply(rawData$json.accountListResponse$response, setDT)
-   return(rbindlist(resll))
+   rbindlist(resll)
 }
 
 #' @describeIn AccountAPI Retrieve balance information specific to one or more accounts for the authenticated user
