@@ -113,7 +113,7 @@ server <- function(input, output, session) {
             other_params = c(oauth_verifier = verifier)
          )
          resp <- httr::GET(url_acc, httr::oauth_header(sign))
-         # print(content(resp))
+
 
          confirm_modal("Access Granted")
 

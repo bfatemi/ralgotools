@@ -1,5 +1,3 @@
-
-
 #' Basic Etrade Login Function
 #'
 #' @return Access token for continued api use
@@ -11,8 +9,8 @@ etrade_login <- function(){
 
    ## DEFINE APPLICATION
    app <- oauth_app(appname = "ralgo",
-                    key = "644b829eead8b987365c37a5d4717920",
-                    secret = "e1569af52ea44ddd27e7d9f5391ba12f")
+                    key = "bc6fbf2827cf97695a248b36449e1d7f",
+                    secret = "6e174c24023452635d4a72e56493c6eb")
 
    ##
    ## GET REQUEST TOKEN (PART 1 OF OAUTH)
@@ -51,7 +49,7 @@ etrade_login <- function(){
          token_secret = rtoken$oauth_token_secret,
          other_params = c(oauth_verifier = verifier)
       )
-      resp <- GET(url_acc, oauth_header(sign))
+      resp <- GET(url.access, oauth_header(sign))
       return(content(resp))
    }
 }
